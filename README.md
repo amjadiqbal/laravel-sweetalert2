@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="art/banner-dark.png">
+    <img alt="Laravel SweetAlert2: popups, toasts and confirm dialogs for Laravel" src="art/banner-light.png" width="100%">
+  </picture>
+</p>
+
 # Laravel SweetAlert2: popups, toasts and confirm dialogs for Laravel
 
 Show [SweetAlert2](https://sweetalert2.github.io) popups and toast notifications from your Laravel controllers,
@@ -7,6 +14,10 @@ SweetAlert2 11, no jQuery, no npm build step.
 [![Latest Version](https://img.shields.io/packagist/v/amjadiqbal/laravel-sweetalert2.svg?style=flat-square)](https://packagist.org/packages/amjadiqbal/laravel-sweetalert2)
 [![PHP Version](https://img.shields.io/packagist/php-v/amjadiqbal/laravel-sweetalert2?style=flat-square)](https://packagist.org/packages/amjadiqbal/laravel-sweetalert2)
 [![License](https://img.shields.io/packagist/l/amjadiqbal/laravel-sweetalert2.svg?style=flat-square)](LICENSE.md)
+
+<p align="center">
+  <img alt="A Laravel app showing a SweetAlert2 success popup, Invoice sent, flashed from a controller after a redirect" src="art/screenshot.png" width="100%">
+</p>
 
 ```php
 // In a controller
