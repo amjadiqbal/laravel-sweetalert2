@@ -6,7 +6,7 @@ All notable changes to `amjadiqbal/laravel-sweetalert2` are documented here. The
 
 ## [Unreleased]
 
-## [1.0.0]
+## [1.0.0] - 2026-10-21
 
 First public release. A rewrite of the earlier, never-published `amjadiqbal/sweetalert2`.
 
@@ -35,3 +35,6 @@ First public release. A rewrite of the earlier, never-published `amjadiqbal/swee
 - Session key and container binding are namespaced (`laravel-sweetalert2.alerts`, `sweetalert2`),
   so it no longer collides with `amjadiqbal/alertify`. The global helper is `swal()`, not `alert()`.
 - Removed the unused Bootstrap login/signup demo views.
+
+[Unreleased]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/amjadiqbal/laravel-sweetalert2/releases/tag/v1.0.0
