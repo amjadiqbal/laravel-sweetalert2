@@ -11,6 +11,8 @@ Show [SweetAlert2](https://sweetalert2.github.io) popups and toast notifications
 Livewire components and Alpine, and put a confirm dialog in front of any delete button with one data attribute.
 SweetAlert2 11, no jQuery, no npm build step.
 
+**Docs and demo:** [amjad.com.pk/laravel/packages/laravel-sweetalert2](https://amjad.com.pk/laravel/packages/laravel-sweetalert2)
+
 [![Latest Version](https://img.shields.io/packagist/v/amjadiqbal/laravel-sweetalert2.svg?style=flat-square)](https://packagist.org/packages/amjadiqbal/laravel-sweetalert2)
 [![PHP Version](https://img.shields.io/packagist/php-v/amjadiqbal/laravel-sweetalert2?style=flat-square)](https://packagist.org/packages/amjadiqbal/laravel-sweetalert2)
 [![License](https://img.shields.io/packagist/l/amjadiqbal/laravel-sweetalert2.svg?style=flat-square)](LICENSE.md)
