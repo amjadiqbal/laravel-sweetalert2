@@ -6,6 +6,20 @@ All notable changes to `amjadiqbal/laravel-sweetalert2` are documented here. The
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-10-23
+
+### Fixed
+- `data-swal-confirm` did nothing after "OK" when SweetAlert2 wasn't loaded and the browser's `confirm()` was used
+  instead: the button, link or form was re-triggered while its original event was still being dispatched, which
+  browsers ignore. It now runs on the next tick. (The normal SweetAlert2 dialog path was not affected.)
+
+### Documentation
+- `wire:confirm` styling is now browser-tested on Livewire 3.8.11 as well as 4.4.8.
+- Documented which config options each promise dialog uses (`alert()` uses the defaults only), the fallback to the
+  browser's `confirm()` / `prompt()` / `alert()` when SweetAlert2 isn't loaded, that focus handling is SweetAlert2's
+  own, that the opt-outs only apply to `wire:confirm`, and that `prompt()`'s string second argument is a
+  pre-selected default value.
+
 ## [1.1.0] - 2026-10-22
 
 ### Added
@@ -51,6 +65,7 @@ First public release. A rewrite of the earlier, never-published `amjadiqbal/swee
   so it no longer collides with `amjadiqbal/alertify`. The global helper is `swal()`, not `alert()`.
 - Removed the unused Bootstrap login/signup demo views.
 
-[Unreleased]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/amjadiqbal/laravel-sweetalert2/releases/tag/v1.0.0

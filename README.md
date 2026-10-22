@@ -60,7 +60,7 @@ the Laravel side small and safe:
 - PHP 8.3+
 - Laravel 12 or 13
 - SweetAlert2 11 (11.26.25 is loaded by default; nothing to install)
-- Optional: Livewire 3.8+ or 4 (tested in a browser with 4.4.8) and Alpine.js
+- Optional: Livewire 3.8+ or 4 (tested in a browser with 3.8.11 and 4.4.8) and Alpine.js
 
 ## Installation
 
@@ -169,7 +169,7 @@ The markup you already have stays exactly as it is:
 
 It works on `wire:click` and `wire:submit`, on elements Livewire adds later, and after `wire:navigate`.
 It hooks into the `el.__livewire_confirm` callback that Livewire's `wire:confirm` directive defines; that
-callback is the same in Livewire 3.8 and 4.4 (checked in their source). Tested in a real browser with Livewire 4.4.8.
+callback is the same in Livewire 3.8 and 4.4. Tested in a real browser with Livewire 3.8.11 and 4.4.8.
 
 To keep the browser's native box for one element, or for a whole section, add `data-swal-native`:
 
@@ -178,7 +178,8 @@ To keep the browser's native box for one element, or for a whole section, add `d
 ```
 
 To turn it off everywhere, set `'livewire_confirm' => false` in `config/sweetalert2.php`. If SweetAlert2 hasn't
-loaded, Livewire's native behaviour is used. Don't combine `wire:confirm` and `data-swal-confirm` on the same
+loaded, Livewire's native behaviour is used. Both opt-outs only affect `wire:confirm` and `wire:confirm.prompt`:
+`data-swal-confirm` elements and the promise dialogs below keep using SweetAlert2. Don't combine `wire:confirm` and `data-swal-confirm` on the same
 element, or you'll be asked twice.
 
 ### Await a dialog (promise API)
@@ -211,13 +212,20 @@ if (await LaravelSwal.confirm('Leave without saving?')) {
 | Method | Resolves to |
 |---|---|
 | `confirm(message, options?)` | `true` when confirmed, `false` when cancelled or dismissed |
-| `prompt(message, defaultValueOrOptions?)` | the entered text, or `null` when cancelled (like `window.prompt`) |
+| `prompt(message, defaultValueOrOptions?)` | the entered text, or `null` when cancelled (like `window.prompt`). A string second argument is the default value, shown pre-selected so typing replaces it |
 | `alert(message, options?)` | nothing, once the dialog is closed |
 
 `message` is a string (first line = title, the rest = text) or SweetAlert2 options. Messages are text, not HTML:
 `title` is shown as text, button labels and `footer` are escaped, and line breaks are kept. Only an explicit `html`
-option is inserted as HTML, so never put user input there. The dialogs use the `confirm` and `prompt` settings from
-the config, SweetAlert2 keeps keyboard focus inside the dialog, and focus returns to the button afterwards.
+option is inserted as HTML, so never put user input there.
+
+Settings: `confirm()` uses the config's `defaults` plus `confirm` options, `prompt()` uses `defaults` plus `prompt`, and
+`alert()` uses `defaults` only. Options you pass win over all of them. Keyboard focus is handled by SweetAlert2 itself:
+it keeps focus inside the open dialog and, by default, returns it to the element that had it before.
+
+If SweetAlert2 isn't loaded (for example the CDN is blocked), the dialogs fall back to the browser's own
+`window.confirm()`, `window.prompt()` and `window.alert()`, showing the message as plain text, and still resolve to the
+same kinds of values. A `data-swal-confirm` element falls back to `window.confirm()` the same way.
 TypeScript declarations are in `vendor/amjadiqbal/laravel-sweetalert2/resources/types/laravel-sweetalert2.d.ts`.
 
 ### From Livewire, without a page load
