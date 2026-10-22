@@ -153,6 +153,8 @@ class SweetAlert2
             'defaults' => (object) config('sweetalert2.defaults', []),
             'toast' => (object) config('sweetalert2.toast', []),
             'confirm' => (object) Alert::normalize((array) config('sweetalert2.confirm', [])),
+            'prompt' => (object) Alert::normalize((array) config('sweetalert2.prompt', [])),
+            'livewireConfirm' => (bool) config('sweetalert2.livewire_confirm', true),
         ];
 
         return new HtmlString(

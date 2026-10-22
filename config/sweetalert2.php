@@ -67,8 +67,9 @@ return [
     |--------------------------------------------------------------------------
     |
     | Used by elements with a data-swal-confirm attribute (delete buttons,
-    | forms, links). Each element can override the title, text, icon and
-    | button labels with data-swal-* attributes.
+    | forms, links), Livewire's wire:confirm, LaravelSwal.confirm() and
+    | Alpine's $swal.confirm(). A data-swal-confirm element can override the
+    | title, text, icon and button labels with data-swal-* attributes.
     |
     */
 
@@ -79,5 +80,36 @@ return [
         'cancelButtonText' => 'Cancel',
         'focusCancel' => true,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prompt dialog options
+    |--------------------------------------------------------------------------
+    |
+    | Used by LaravelSwal.prompt(), Alpine's $swal.prompt() and Livewire's
+    | wire:confirm.prompt.
+    |
+    */
+
+    'prompt' => [
+        'input' => 'text',
+        'showCancelButton' => true,
+        'confirmButtonText' => 'OK',
+        'cancelButtonText' => 'Cancel',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Style Livewire's wire:confirm
+    |--------------------------------------------------------------------------
+    |
+    | When true, every wire:confirm and wire:confirm.prompt (Livewire 3 and 4)
+    | opens a SweetAlert2 dialog instead of the browser's confirm()/prompt(),
+    | with no markup changes. Opt a single element (or a whole section) out
+    | with a data-swal-native attribute.
+    |
+    */
+
+    'livewire_confirm' => true,
 
 ];
