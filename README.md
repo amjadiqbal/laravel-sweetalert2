@@ -60,7 +60,7 @@ the Laravel side small and safe:
 - PHP 8.3+
 - Laravel 12 or 13
 - SweetAlert2 11 (11.26.25 is loaded by default; nothing to install)
-- Optional: Livewire 3.8+ or 4 (tested with 4.4.7) and Alpine.js
+- Optional: Livewire 3.8+ or 4 (tested in a browser with 4.4.8) and Alpine.js
 
 ## Installation
 
@@ -169,7 +169,7 @@ The markup you already have stays exactly as it is:
 
 It works on `wire:click` and `wire:submit`, on elements Livewire adds later, and after `wire:navigate`.
 It hooks into the `el.__livewire_confirm` callback that Livewire's `wire:confirm` directive defines; that
-callback is the same in Livewire 3.8 and 4.4 (checked in their source). Tested in a real browser with Livewire 4.4.7.
+callback is the same in Livewire 3.8 and 4.4 (checked in their source). Tested in a real browser with Livewire 4.4.8.
 
 To keep the browser's native box for one element, or for a whole section, add `data-swal-native`:
 
