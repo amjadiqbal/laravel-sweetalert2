@@ -146,7 +146,8 @@
   function ask(el, proceed) {
     var s = loaded();
     if (!s) {
-      if (window.confirm(el.dataset.swalConfirm || 'Are you sure?')) proceed();
+      // Next tick: the browser ignores el.click() / requestSubmit() while the original event is still being dispatched.
+      if (window.confirm(el.dataset.swalConfirm || 'Are you sure?')) setTimeout(proceed, 0);
       return;
     }
     s.fire(confirmOptions(el)).then(function (result) {

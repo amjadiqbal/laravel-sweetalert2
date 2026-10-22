@@ -38,3 +38,7 @@ it('ships TypeScript declarations for the browser API', function () {
         ->toContain('confirm(message?: SwalMessage, options?: SwalOptions): Promise<boolean>')
         ->toContain('Promise<string | null>');
 });
+
+it('re-triggers a data-swal-confirm element on the next tick when falling back to window.confirm', function () {
+    expect(Blade::render('<x-sweetalert2 />'))->toContain("if (window.confirm(el.dataset.swalConfirm || 'Are you sure?')) setTimeout(proceed, 0);");
+});
