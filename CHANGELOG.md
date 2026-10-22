@@ -6,6 +6,21 @@ All notable changes to `amjadiqbal/laravel-sweetalert2` are documented here. The
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-22
+
+### Added
+- Livewire's `wire:confirm` and `wire:confirm.prompt` open SweetAlert2 dialogs instead of the browser's
+  `confirm()` / `prompt()`, with no markup changes. Livewire's rules are kept: "Are you sure?" when the message
+  is empty, `\n` as a line break, `question|expected` type-to-confirm, and the console warning when the
+  expectation is missing. Works on `wire:click` and `wire:submit`, on elements added later and after
+  `wire:navigate`. Uses the `el.__livewire_confirm` callback, which is the same in Livewire 3.8 and 4.4.
+- Opt-outs: `'livewire_confirm' => false` in the config, or `data-swal-native` on an element or a parent.
+- Promise dialogs: `await $swal.confirm()`, `$swal.prompt()` and `$swal.alert()` in Alpine, and
+  `LaravelSwal.confirm()`, `.prompt()` and `.alert()` in plain JavaScript. They resolve to `true`/`false`,
+  the entered text or `null`, and nothing (once closed). Messages are text, not HTML, as in 1.0.
+- `prompt` options in the config.
+- TypeScript declarations in `resources/types/laravel-sweetalert2.d.ts`.
+
 ## [1.0.0] - 2026-10-21
 
 First public release. A rewrite of the earlier, never-published `amjadiqbal/sweetalert2`.
@@ -36,5 +51,6 @@ First public release. A rewrite of the earlier, never-published `amjadiqbal/swee
   so it no longer collides with `amjadiqbal/alertify`. The global helper is `swal()`, not `alert()`.
 - Removed the unused Bootstrap login/signup demo views.
 
-[Unreleased]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/amjadiqbal/laravel-sweetalert2/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/amjadiqbal/laravel-sweetalert2/releases/tag/v1.0.0

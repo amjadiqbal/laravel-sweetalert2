@@ -43,6 +43,10 @@ the Laravel side small and safe:
 
 - **Flash popups like flash messages.** Queue one or several from a controller; they show, one after another,
   on the next page, even after more than one redirect.
+- **Livewire's `wire:confirm`, styled, with zero markup changes.** Every existing `wire:confirm` and
+  `wire:confirm.prompt` opens a SweetAlert2 dialog instead of the browser's grey `confirm()` box.
+- **Await a dialog.** `await $swal.confirm('Publish?')` in Alpine, or `await LaravelSwal.prompt('Name?')` in plain
+  JavaScript, returns the answer.
 - **Confirm dialogs without JavaScript.** `data-swal-confirm` works on links, buttons, forms, Livewire
   `wire:click` and `wire:submit`.
 - **Livewire and Alpine.** `$this->swal(...)` in a Livewire component, or `$dispatch('sweetalert2', {...})`
@@ -56,7 +60,7 @@ the Laravel side small and safe:
 - PHP 8.3+
 - Laravel 12 or 13
 - SweetAlert2 11 (11.26.25 is loaded by default; nothing to install)
-- Optional: Livewire (tested with 4) and Alpine.js
+- Optional: Livewire 3.8+ or 4 (tested with 4.4.7) and Alpine.js
 
 ## Installation
 
@@ -139,6 +143,79 @@ Add `data-swal-confirm` to a link, a button or a form. The action only runs if t
 | `data-swal-confirm-button` | `Yes` |
 | `data-swal-cancel-button` | `Cancel` |
 
+### Livewire's `wire:confirm`, styled (no markup changes)
+
+Installed, the package takes over Livewire's own [`wire:confirm`](https://livewire.laravel.com/docs/wire-confirm).
+The markup you already have stays exactly as it is:
+
+```blade
+<button wire:click="delete" wire:confirm="Delete this post?\nThis cannot be undone.">Delete</button>
+
+<button wire:click="wipe" wire:confirm.prompt="Type DELETE to wipe the workspace|DELETE">Wipe</button>
+```
+
+| | Before (Livewire alone) | After (with this package) |
+|---|---|---|
+| `wire:confirm` | The browser's grey `confirm()` box, which can't be styled | A SweetAlert2 dialog: the first line is the title, the rest is the text, with the `confirm` settings from the config (icon, button labels, cancel focused) |
+| `wire:confirm.prompt` | The browser's `prompt()` | A SweetAlert2 dialog with a text input; the action runs only if the typed text matches exactly |
+| Empty `wire:confirm` | "Are you sure?" | "Are you sure?" |
+| `\n` in the message | A line break | A line break |
+| `.prompt` without `|expected` | Console warning, nothing happens | The same warning, nothing happens |
+| Cancel / wrong text | The action doesn't run | The action doesn't run |
+
+It works on `wire:click` and `wire:submit`, on elements Livewire adds later, and after `wire:navigate`.
+It hooks into the `el.__livewire_confirm` callback that Livewire's `wire:confirm` directive defines; that
+callback is the same in Livewire 3.8 and 4.4 (checked in their source). Tested in a real browser with Livewire 4.4.7.
+
+To keep the browser's native box for one element, or for a whole section, add `data-swal-native`:
+
+```blade
+<button wire:click="delete" wire:confirm="Sure?" data-swal-native>Delete</button>
+```
+
+To turn it off everywhere, set `'livewire_confirm' => false` in `config/sweetalert2.php`. If SweetAlert2 hasn't
+loaded, Livewire's native behaviour is used. Don't combine `wire:confirm` and `data-swal-confirm` on the same
+element, or you'll be asked twice.
+
+### Await a dialog (promise API)
+
+Ask a question and get the answer back, like `confirm()` and `prompt()` but styled. In Alpine the `$swal` magic is
+available in any `x-data`:
+
+```blade
+<button x-data @click="if (await $swal.confirm('Publish now?\nSubscribers get an email.')) $wire.publish()">
+    Publish
+</button>
+
+<button x-data @click="let name = await $swal.prompt('Rename the project', 'Website'); if (name !== null) $wire.rename(name)">
+    Rename
+</button>
+
+<button x-data @click="await $swal.alert({ title: 'Exported', icon: 'success' }); location.href = '/downloads'">
+    Export
+</button>
+```
+
+In plain JavaScript use `window.LaravelSwal`:
+
+```js
+if (await LaravelSwal.confirm('Leave without saving?')) {
+    history.back();
+}
+```
+
+| Method | Resolves to |
+|---|---|
+| `confirm(message, options?)` | `true` when confirmed, `false` when cancelled or dismissed |
+| `prompt(message, defaultValueOrOptions?)` | the entered text, or `null` when cancelled (like `window.prompt`) |
+| `alert(message, options?)` | nothing, once the dialog is closed |
+
+`message` is a string (first line = title, the rest = text) or SweetAlert2 options. Messages are text, not HTML:
+`title` is shown as text, button labels and `footer` are escaped, and line breaks are kept. Only an explicit `html`
+option is inserted as HTML, so never put user input there. The dialogs use the `confirm` and `prompt` settings from
+the config, SweetAlert2 keeps keyboard focus inside the dialog, and focus returns to the button afterwards.
+TypeScript declarations are in `vendor/amjadiqbal/laravel-sweetalert2/resources/types/laravel-sweetalert2.d.ts`.
+
 ### From Livewire, without a page load
 
 ```php
@@ -195,7 +272,9 @@ SweetAlert2::info('Release notes')->html('<ul><li>Faster search</li><li>Dark mod
 ],
 'defaults' => [],           // applied to every popup, e.g. ['theme' => 'auto']
 'toast' => [...],           // toast position, timer, progress bar
-'confirm' => [...],         // data-swal-confirm dialog defaults
+'confirm' => [...],         // data-swal-confirm, wire:confirm and $swal.confirm defaults
+'prompt' => [...],          // wire:confirm.prompt and $swal.prompt defaults
+'livewire_confirm' => true, // style Livewire's wire:confirm (false = browser's confirm())
 ```
 
 **Bundling with Vite instead of the CDN:** set `'cdn' => false`, run `npm i sweetalert2`, and in
