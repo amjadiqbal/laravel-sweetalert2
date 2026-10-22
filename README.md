@@ -154,6 +154,10 @@ The markup you already have stays exactly as it is:
 <button wire:click="wipe" wire:confirm.prompt="Type DELETE to wipe the workspace|DELETE">Wipe</button>
 ```
 
+<p align="center">
+  <img alt="A Livewire Delete button with wire:confirm showing a SweetAlert2 dialog, Delete this post? This cannot be undone., instead of the browser's confirm box" src="art/wire-confirm.png" width="100%">
+</p>
+
 | | Before (Livewire alone) | After (with this package) |
 |---|---|---|
 | `wire:confirm` | The browser's grey `confirm()` box, which can't be styled | A SweetAlert2 dialog: the first line is the title, the rest is the text, with the `confirm` settings from the config (icon, button labels, cancel focused) |
