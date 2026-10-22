@@ -109,7 +109,15 @@
     if (typeof extra === 'string') extra = { inputValue: extra };
     var s = swal();
     if (!s) return Promise.resolve(window.prompt(plain(msg), (extra && extra.inputValue) || ''));
-    return s.fire(dialog(settings.prompt, msg, extra)).then(function (result) {
+    var o = dialog(settings.prompt, msg, extra);
+    if (!o.didOpen) {
+      // Like window.prompt: the default value is selected, so typing replaces it.
+      o.didOpen = function () {
+        var input = s.getInput();
+        if (input && typeof input.select === 'function') input.select();
+      };
+    }
+    return s.fire(o).then(function (result) {
       return result && result.isConfirmed ? String(result.value == null ? '' : result.value) : null;
     });
   }
